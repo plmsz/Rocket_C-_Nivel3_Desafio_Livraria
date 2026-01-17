@@ -214,3 +214,28 @@ O projeto segue uma arquitetura em camadas:
 
 - ⚠️ O armazenamento é **em memória**, portanto os dados são perdidos ao reiniciar a aplicação
 - 📚 O projeto já vem com um livro de exemplo: "Dom Casmurro" de Machado de Assis
+
+## 🎯 Funcionalidades adicionais que implmentei
+
+### Controller Base Abstrato (ProjectBaseController)
+
+Classe base que fornece funcionalidades comuns:
+- Validação de chave de API via header customizado
+- Sistema de log personalizável
+- Não pode ser instanciada diretamente (abstract)
+
+### Controller Administrativo (/api/admin/books)
+
+Endpoints administrativos com segurança reforçada:
+
+**1. Busca por Estoque Mínimo**
+- **Rota:** `GET /api/admin/books/get-min-stock?quantity={valor}`
+- **Headers:** `key: livraria-2026`
+- **Descrição:** Lista livros com estoque ≥ ao valor informado
+
+**2. Relatório de Livros Esgotados**
+- **Rota:** `GET /api/admin/books/report`
+- **Headers:** 
+  - `key: livraria-2026`
+  - `token: report-token-123`
+- **Descrição:** Lista apenas livros com estoque zero (esgotados)

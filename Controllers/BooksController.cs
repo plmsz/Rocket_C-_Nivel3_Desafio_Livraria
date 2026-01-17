@@ -8,10 +8,16 @@ namespace Nivel3_Desafio_Livraria.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class BooksController : ControllerBase
+public class BooksController : ProjectBaseController
 {
     private readonly BooksRepository _repository; //recuperar e modificar no controller o inventário de livros
     private readonly BookService _bookService;
+
+    protected override string Log()
+    {
+        return $"{base.Log()} Timestamp: {DateTime.UtcNow}";
+    }
+
     public BooksController(BooksRepository repository, BookService bookService) // .net injetar automaticamente aqui
     {
         _repository = repository;
@@ -22,6 +28,7 @@ public class BooksController : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
+        Console.WriteLine(Log());
         return Ok(_repository.Inventory.ToList());
     }
 
@@ -29,6 +36,7 @@ public class BooksController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Get(Guid id)
     {
+        Console.WriteLine(Log());
         var book = _repository.Inventory.Find(book => book.Id == id);
 
         if (book is null)
@@ -44,6 +52,7 @@ public class BooksController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] RequestBookJson payload)
     {
+        Console.WriteLine(Log());
         try
         {
             _bookService.ValidateBook(payload);
@@ -75,6 +84,7 @@ public class BooksController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult Put(Guid id, RequestBookJson payload)
     {
+        Console.WriteLine(Log());
         var bookRepository = _repository.Inventory.Find(book => book.Id == id);
 
         if (bookRepository is null)
@@ -119,6 +129,7 @@ public class BooksController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(Guid id)
     {
+        Console.WriteLine(Log());
         var bookRepository = _repository.Inventory.Find(book => book.Id == id);
 
         if (bookRepository is null)
